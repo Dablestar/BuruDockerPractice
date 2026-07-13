@@ -17,6 +17,7 @@ docker run [imageName] [tagName] : 이미지 실행
 docker build -t (imageName:tagName) (destination) : 이미지 생성
 
 
+
 ## npm 관련 명령어
 
 npm init -y: 폴더 초기화
@@ -45,5 +46,18 @@ WORKDIR <- 폴더 이동(cd랑 비슷함)
 
 COPY (target) (destination) <- 파일 복사
 . <- 현재경로
+
+
+## DockerHub 사용하기
+
+### Push
+회원가입 -> Repo 만들기(private repo는 무료계정일 경우 하나만 만들 수 있음) -> 앱으로 돌아와 Push to Docker Hub
+안되면
+cmd -> docker tag [imageName:tagName] [repoName/tagName] (이름 변경 명령어) -> docker push [repoName/tagName] 안되면 docker login
+
+### Pull
+docker pull [imageName:tagName]
+
+여러 종류의 이미지가 있다면? (e.g. 웹서버 이미지, 프론트 이미지, DB 이미지) => 별도의 repo에 올리는게 보통임. 다만 소스코드가 들어있는 이미지는 private repo에 넣을것
 
 
