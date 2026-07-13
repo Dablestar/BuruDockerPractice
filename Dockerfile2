@@ -1,0 +1,32 @@
+FROM node:22-slim
+WORKDIR /app
+COPY package*.json .
+
+# npm ci <- clean install, 안정성이 늘어남
+RUN ["npm", "ci"]
+
+# RUN <- 결과값이 캐싱됨
+# 별 차이가 없으면 캐시된 내용을 사용함
+# 잘 안변하는것들은 위쪽에, 자주 변하는 것들은 위쪽에
+
+# e.g.) package.json, 라이브러리 파일들은 변동사항 별로 없음
+# 1. package.json 먼저 옮기기
+# 2. npm install 실행
+# 3. 소스코드 옮기고 복사
+
+# 환경변수 추가. (docker run -e 변수이름='값' 으로도 실행가능)
+ENV NODE_ENV=production
+
+COPY . .
+EXPOSE 5000
+
+# 실행할 때 기본적으로 관리자 권한으로 실행되기 때문에 권한 낮춰놓기
+# 유저 생성 + 유저로 변경
+# 단, node.js 공식 라이브러리 버전을 사용하는 경우 기본적으로 node라는 유저가 세팅되어있음
+USER node
+CMD ["node", "server.js"]
+
+
+
+# 프로젝트가 커지면 docker build 시간이 끔찍하게 길어짐
+# 변동사항이 많아지면 밑에 적어놓기(e.g. 소스코드 복사하는 부분)
